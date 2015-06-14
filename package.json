@@ -1,0 +1,19 @@
+{
+  "name": "node-dogserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binRick/node-dogserver"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/binRick/node-dogserver/issues"
+  },
+  "homepage": "https://github.com/binRick/node-dogserver"
+}
