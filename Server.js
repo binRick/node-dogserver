@@ -1,19 +1,25 @@
 var express = require('express');
 var morgan = require('morgan');
+var apiRouter = require('./apiRouter');
 var app = express();
 var Dogs = require('./Dogs');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 29080;
 
-server.listen(port, function() {
-    console.log('Server listening at port %d', port);
+var d = require('./Database');
+var Database = new d(function(Setup) {
+    apiRouter.use(Setup);
+app.get('/api/:fxn/key/:key/ts/:ts/lat/:lat/lng/:lng', apiRouter);
+    server.listen(port, function() {
+        console.log('Server listening at port %d', port);
+    });
 });
 
 app.use(express.static(__dirname + '/public_html'));
 
-app.get('/',function(req,res){
-	res.end('ok');
+app.get('/', function(req, res) {
+    res.end('ok');
 });
 app.use(morgan());
 
