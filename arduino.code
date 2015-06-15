@@ -1,0 +1,65 @@
+ 
+#include <SPI.h>
+#include <Ethernet.h>
+byte mac[] = {  0x98, 0x4F, 0xEE, 0x05, 0x32, 0xB2 };
+IPAddress server(192,168,2,1);
+int PORT = 29080;
+ //float LAT = String('28.653782603038707');
+ //var LNG = String('-81.48215551157');
+ int TS = 1;
+ //int key=String('as97dta86sdtr6as82');
+EthernetClient client;
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("ifdown");
+  system("ifdown eth0");  
+  
+  
+   delay(1000);
+    Serial.println("ifup");
+   system("ifup eth0");
+   delay(8000);
+    Serial.println("ok");
+  
+
+   if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+     for(;;)
+      ;
+  }
+   delay(1000);
+  Serial.println("connecting...");
+ for(;;){
+   if (client.connect(server, PORT)) {
+    Serial.println("connected");
+     client.println("GET /api/update/key/"+String(TS)+"/ts/"+String(TS)+"/lat/"+String(TS)+"/lng/"+String(TS)+" HTTP/1.0");
+     
+     client.println();
+  }   else {
+     
+    Serial.println("connection failed");
+  }
+  delay(5000);
+ }
+
+}
+
+void loop()
+{
+ 
+  if (client.available()) {
+    char c = client.read();
+    Serial.print(c);
+  }
+
+   if (!client.connected()) {
+    Serial.println();
+    Serial.println("disconnecting.");
+    client.stop();
+
+     for(;;)
+      ;
+  }
+}
+
